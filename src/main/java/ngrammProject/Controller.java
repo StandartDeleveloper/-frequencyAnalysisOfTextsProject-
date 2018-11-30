@@ -97,8 +97,8 @@ public class Controller implements Initializable {
 
     public Controller() {}
 
-    private String getDataFirstText() {
-        String result = firstText.getText();
+    private String getTextData(TextArea text, CheckBox spaceCheck,CheckBox registerCheck,CheckBox punctuationCheck,CheckBox changeSpaceOn_) {
+        String result = text.getText();
         result = result.replaceAll("[^А-Яа-я -!\",./:;?]", "");
         if (!spaceCheck.isSelected()) {
             result = result.replaceAll("\\s", "");
@@ -115,24 +115,11 @@ public class Controller implements Initializable {
         return result;
     }
 
-    private String getDataSecondText() {
-        String result = secondText.getText();
-        result = result.replaceAll("[^А-Яа-я -!\",./:;?]", "");
-        if (!spaceCheck.isSelected()) {
-            result = result.replaceAll(" ", "");
-        }
-        if (!registerCheck.isSelected()) {
-            result = result.toLowerCase();
-        }
-        if (!punctuationCheck.isSelected()) {
-            result = result.replaceAll("[-!\",./:;?]", "");
-        }
-        if (changeSpaceOn_.isSelected()) {
-            result = result.replaceAll(" ", "_");
-        }
-        return result;
-    }
 
+
+
+
+//  On click method
     public void doFindNGramm() {
         setDataModelList(ProduceResult());
         inputDataALL();
@@ -155,11 +142,11 @@ public class Controller implements Initializable {
         int bufferNumber = 0;
 
         if (modeSlider.getValue() <= 50.0) {
-            insertMap1 = findOne(getDataFirstText());
-            insertMap2 = findOne(getDataSecondText());
+            insertMap1 = findOne(getTextData(firstText,spaceCheck,registerCheck,punctuationCheck,changeSpaceOn_));
+            insertMap2 = findOne(getTextData(secondText,spaceCheck,registerCheck,punctuationCheck,changeSpaceOn_));
         } else {
-            insertMap1 = findBi(getDataFirstText());
-            insertMap2 = findBi(getDataSecondText());
+            insertMap1 = findBi(getTextData(firstText,spaceCheck,registerCheck,punctuationCheck,changeSpaceOn_));
+            insertMap2 = findBi(getTextData(secondText,spaceCheck,registerCheck,punctuationCheck,changeSpaceOn_));
         }
         for (Map.Entry<String, Integer> pair1 : insertMap1.entrySet()) {
             sizeMap1 = sizeMap1 + pair1.getValue();
@@ -172,7 +159,7 @@ public class Controller implements Initializable {
         textField2.setText(Double.toString(sizeMap2));
 
         if (insertMap1.size() > insertMap2.size()) {
-            // TODO: extract to separate method 0
+            // TODO: extract to separate method
             for (Map.Entry<String, Integer> pair : insertMap1.entrySet()) {
                 key = pair.getKey();
                 if (insertMap2.containsKey(key)) {
@@ -188,11 +175,9 @@ public class Controller implements Initializable {
                 result.add(new DataModel(pair.getKey(), average1, average2, differenceAverage));
                 bufferNumber = 0;
                 sqareDeviance += differenceAverage * differenceAverage;
-
-
             }
         } else {
-            // TODO: extract to separate method 0
+            // TODO: extract to separate method
             for (Map.Entry<String, Integer> pair : insertMap2.entrySet()) {
                 key = pair.getKey();
                 if (insertMap1.containsKey(key)) {
@@ -210,6 +195,8 @@ public class Controller implements Initializable {
                 sqareDeviance += differenceAverage * differenceAverage;
             }
         }
+
+
         sqareDeviation.setText(String.valueOf(sqareDeviance));
         return result;
     }
@@ -260,7 +247,7 @@ public class Controller implements Initializable {
         dataModelTableView.setItems(mainApp.getData());
     }
 
-    public void getTextFromFirstFile() {
+    public void getTextFromFile(TextArea firstText,TextField textName){
         FileChooser chooser = new FileChooser();
         String text = "";
         String filename = "";
@@ -275,7 +262,6 @@ public class Controller implements Initializable {
         clearName = FilenameUtils.removeExtension(filename);
         extension = FilenameUtils.getExtension(filename);
 
-        // TODO: extract to separate method 1
         if (file != null) {
             if (extension.equals("doc") || extension.equals("docx")) {
                 try {
@@ -300,49 +286,15 @@ public class Controller implements Initializable {
             }
         }
         firstText.setText(text);
-        firstTextName.setText(clearName);
+        textName.setText(clearName);
     }
 
-    public void getTextFronFile2() {
-        FileChooser choose1 = new FileChooser();
-        String text = "";
-        String filename = "";
-        String ClearName = "";
-        String Extension = "";
-        secondText.clear();
-        File file = choose1.showOpenDialog(mainApp.getPrimaryStage());
-        filename = file.getName();
-        ClearName = FilenameUtils.removeExtension(filename);
-        Extension = FilenameUtils.getExtension(filename);
+    public void getTextFromFirstFile() {
+        getTextFromFile(firstText,firstTextName);
+    }
 
-        // TODO: extract to separate method 1
-        if (file != null) {
-            if (Extension.equals("doc") || Extension.equals("docx")) {
-                try {
-                    FileInputStream fis = new FileInputStream(file.getAbsolutePath());
-                    HWPFDocument document = new HWPFDocument(fis);
-                    WordExtractor extractor = new WordExtractor(document);
-                    String[] fileData = extractor.getParagraphText();
-                    for (int i = 0; i < fileData.length; i++) {
-                        if (fileData[i] != null)
-                            text += fileData[i];
-                    }
-                } catch (Exception exep) {
-                    exep.printStackTrace();
-                }
-            } else {
-                try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "windows-1251"))) {
-                    String line;
-                    while ((line = reader.readLine()) != null) {
-                        text += line;
-                    }
-                } catch (IOException e) {
-                }
-
-            }
-        }
-        secondText.setText(text);
-        secondTextName.setText(ClearName);
+    public void getTextFromFile2() {
+        getTextFromFile(secondText,secondTextName);
     }
 
     private void openFile(File file) {
@@ -359,18 +311,6 @@ public class Controller implements Initializable {
         ObservableList<DataModel> dataList = ProduceResult();
         File file = choose.showOpenDialog(mainApp.getPrimaryStage());
         // TODO: if true
-        if (true) {
-            try {
-                FileWriter writer = new FileWriter(file.getAbsolutePath());
-                for (DataModel modelObject : dataList) {
-                    writer.write(modelObject.getNgrammName() + " " + modelObject.getFirsTextAverage() + " " +
-                            modelObject.getSecondTextAverage() + " " + modelObject.getDifference() + "\r\n");
-                }
-                writer.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        } else {
             try {
                 FileWriter writer = new FileWriter(file.getAbsolutePath());
                 for (int i = 0; i < 4; i++) {
@@ -394,11 +334,9 @@ public class Controller implements Initializable {
                     }
                     writer.write("\r\n" + "\r\n" + "\r\n");
                 }
-
                 writer.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
     }
 }

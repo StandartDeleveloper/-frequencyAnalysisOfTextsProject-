@@ -41,7 +41,7 @@ public class MainApp extends Application {
         String fxmlFile = "/fxml/design.fxml";
         FXMLLoader loader = new FXMLLoader();
         Parent root = (Parent) loader.load(getClass().getResourceAsStream(fxmlFile));
-        primaryStage.setTitle("G. Emil");
+        primaryStage.setTitle("M. Kyrill");
         primaryStage.setScene(new Scene(root));
         Controller controller = loader.getController();
         controller.setPrimaryStage(primaryStage);
