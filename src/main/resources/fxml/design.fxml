@@ -39,7 +39,7 @@
       <TextField fx:id="sqareDeviation" layoutX="391.0" layoutY="489.0" text="3" />
       <TextField fx:id="firstTextName" layoutX="659.0" layoutY="34.0" text="Название 1" />
       <TextField fx:id="secondTextName" layoutX="659.0" layoutY="288.0" text="Название 2" />
-      <Button layoutX="817.0" layoutY="33.0" mnemonicParsing="false" onAction="#getTextFronFile1" prefHeight="25.0" prefWidth="165.0" text="Загрузить из файла текст 1" />
+      <Button layoutX="817.0" layoutY="33.0" mnemonicParsing="false" onAction="#getTextFromFirstFile" prefHeight="25.0" prefWidth="165.0" text="Загрузить из файла текст 1" />
       <Button layoutX="817.0" layoutY="287.0" mnemonicParsing="false" onAction="#getTextFronFile2" prefHeight="25.0" prefWidth="165.0" text="Загрузить из файла текст 2" />
       <Button layoutX="392.0" layoutY="525.0" mnemonicParsing="false" onAction="#writeInFile" prefHeight="49.0" prefWidth="149.0" text="Записать в файл" />
       <CheckBox fx:id="changeSpaceOn_" layoutX="390.0" layoutY="72.0" mnemonicParsing="false" text="Заменить пробел на &quot;_&quot;" />

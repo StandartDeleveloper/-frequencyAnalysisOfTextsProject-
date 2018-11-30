@@ -21,8 +21,6 @@ import java.net.URL;
 import java.util.*;
 
 import static ngrammProject.MainApp.setDataModelList;
-
-
 public class Controller implements Initializable {
 
     private static Stage pStage;
@@ -262,28 +260,24 @@ public class Controller implements Initializable {
         dataModelTableView.setItems(mainApp.getData());
     }
 
-    // TODO: naming
-    public void getTextFronFile1() {
-        // TODO: field name conventions
-        FileChooser choose1 = new FileChooser();
-        // TODO: move to place with used
+    public void getTextFromFirstFile() {
+        FileChooser chooser = new FileChooser();
         String text = "";
         String filename = "";
-        // TODO: field name conventions
-        String ClearName = "";
-        String Extension = "";
+        String clearName = "";
+        String extension = "";
         firstText.clear();
-        File file = choose1.showOpenDialog(mainApp.getPrimaryStage());
+        File file = chooser.showOpenDialog(mainApp.getPrimaryStage());
         if (file == null) {
             return;
         }
         filename = file.getName();
-        ClearName = FilenameUtils.removeExtension(filename);
-        Extension = FilenameUtils.getExtension(filename);
+        clearName = FilenameUtils.removeExtension(filename);
+        extension = FilenameUtils.getExtension(filename);
 
         // TODO: extract to separate method 1
         if (file != null) {
-            if (Extension.equals("doc") || Extension.equals("docx")) {
+            if (extension.equals("doc") || extension.equals("docx")) {
                 try {
                     FileInputStream fis = new FileInputStream(file.getAbsolutePath());
                     HWPFDocument document = new HWPFDocument(fis);
@@ -306,7 +300,7 @@ public class Controller implements Initializable {
             }
         }
         firstText.setText(text);
-        firstTextName.setText(ClearName);
+        firstTextName.setText(clearName);
     }
 
     public void getTextFronFile2() {
