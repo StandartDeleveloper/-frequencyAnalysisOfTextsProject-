@@ -115,10 +115,6 @@ public class Controller implements Initializable {
         return result;
     }
 
-
-
-
-
 //  On click method
     public void doFindNGramm() {
         setDataModelList(ProduceResult());
@@ -159,7 +155,6 @@ public class Controller implements Initializable {
         textField2.setText(Double.toString(sizeMap2));
 
         if (insertMap1.size() > insertMap2.size()) {
-            // TODO: extract to separate method
             for (Map.Entry<String, Integer> pair : insertMap1.entrySet()) {
                 key = pair.getKey();
                 if (insertMap2.containsKey(key)) {
@@ -177,7 +172,6 @@ public class Controller implements Initializable {
                 sqareDeviance += differenceAverage * differenceAverage;
             }
         } else {
-            // TODO: extract to separate method
             for (Map.Entry<String, Integer> pair : insertMap2.entrySet()) {
                 key = pair.getKey();
                 if (insertMap1.containsKey(key)) {
@@ -195,8 +189,6 @@ public class Controller implements Initializable {
                 sqareDeviance += differenceAverage * differenceAverage;
             }
         }
-
-
         sqareDeviation.setText(String.valueOf(sqareDeviance));
         return result;
     }
@@ -210,7 +202,6 @@ public class Controller implements Initializable {
         }
         return oneGmap;
     }
-
 
     private HashMap<String, Integer> findBi(String inputText) {
         HashMap<String, Integer> biGmap = new HashMap<String, Integer>();
@@ -236,10 +227,6 @@ public class Controller implements Initializable {
         columnText1Name.setCellValueFactory(cellData -> cellData.getValue().firsTextAverageProperty().asObject());
         columnText2Name.setCellValueFactory(cellData -> cellData.getValue().secondTextAverageProperty().asObject());
         columnDifferenceName.setCellValueFactory(cellData -> cellData.getValue().differenceProperty().asObject());
-    }
-
-    public void inputData() {
-        columnNgramName.setCellValueFactory(cellData -> cellData.getValue().ngrammNameProperty());
     }
 
     public void setMainApp(MainApp mainApp) {
@@ -288,11 +275,11 @@ public class Controller implements Initializable {
         firstText.setText(text);
         textName.setText(clearName);
     }
-
+    //    on click
     public void getTextFromFirstFile() {
         getTextFromFile(firstText,firstTextName);
     }
-
+    //    on click
     public void getTextFromFile2() {
         getTextFromFile(secondText,secondTextName);
     }
@@ -304,13 +291,12 @@ public class Controller implements Initializable {
             e.printStackTrace();
         }
     }
-
+    //    on click
     public void writeInFile() {
         FileChooser choose = new FileChooser();
         String[] strArray = new String[4];
         ObservableList<DataModel> dataList = ProduceResult();
         File file = choose.showOpenDialog(mainApp.getPrimaryStage());
-        // TODO: if true
             try {
                 FileWriter writer = new FileWriter(file.getAbsolutePath());
                 for (int i = 0; i < 4; i++) {
